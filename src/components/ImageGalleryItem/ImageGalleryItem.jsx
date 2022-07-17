@@ -1,5 +1,5 @@
 import React from 'react';
-import css from '../ImageGalleryItem';
+import css from './ImageGalleryItem.module.css';
 import PropTypes from 'prop-types';
 
 const ImageGallryItem = ({ pictureData, onClick }) => {
@@ -18,8 +18,8 @@ const ImageGallryItem = ({ pictureData, onClick }) => {
   ));
 };
 
-export default ImageGallryItem;
-
 ImageGallryItem.propTypes = {
   pictureData: PropTypes.arrayOf(PropTypes.object),
 };
+
+export default ImageGallryItem;

@@ -6,8 +6,8 @@ const ImageGallery = ({ children }) => (
   <ul className={css.ImageGallery}>{children}</ul>
 );
 
-export default ImageGallery;
-
 ImageGallery.propTypes = {
   children: PropTypes.object,
 };
+
+export default ImageGallery;

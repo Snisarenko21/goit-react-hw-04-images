@@ -2,7 +2,7 @@ import { Component } from 'react';
 import css from './Searchbar.module.css';
 import toast, { Toaster } from 'react-hot-toast';
 
-export default class SearchBar extends Component {
+class SearchBar extends Component {
   state = {
     pictureName: '',
   };
@@ -41,3 +41,5 @@ export default class SearchBar extends Component {
     );
   }
 }
+
+export default SearchBar;

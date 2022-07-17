@@ -4,7 +4,7 @@ import ImageGallery from 'components/ImageGallery';
 import ImageGalleryItem from 'components/ImageGalleryItem';
 import LoaderSpiner from 'components/Loader/Loader';
 import api from 'services/api';
-import Searchbar from '../Searchbar';
+import Searchbar from 'components/Searchbar/Searchbar';
 import css from './App.module.css';
 import LoadMore from 'components/Button/Button';
 
@@ -111,7 +111,6 @@ export class App extends Component {
           </ImageGallery>
         )}
         {status === 'loaded' && <LoadMore onClick={this.loadMore} />}
-        {/* {images.length !== 0 && <PixabayImageGallery images={images} />} */}
         {pictureModal.length > 0 && (
           <Modal onClose={this.closeModal}>
             <img src={pictureModal} alt="" />

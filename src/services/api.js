@@ -15,4 +15,5 @@ function fetchPicture(name, page) {
 }
 
 const api = { fetchPicture };
+
 export default api;
