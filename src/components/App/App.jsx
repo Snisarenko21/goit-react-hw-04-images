@@ -16,17 +16,19 @@ const Status = {
 export class App extends Component {
   state = {
     pictureName: '',
-    pictureData: '',
+    pictureData: [],
     pictureModal: '',
     status: null,
     page: 1,
+    per_page: 12,
+    isVisible: false,
   };
 
-  componentDidUpdate(prevState, prevProps) {
-    const prevSearch = prevProps.pictureName;
+  componentDidUpdate(_, prevState) {
+    const prevSearch = prevState.pictureName;
     const nextSearch = this.state.pictureName;
     const nextPage = this.state.page;
-    const prevPage = prevProps.page;
+    const prevPage = prevState.page;
 
     if (prevSearch !== nextSearch) {
       this.loadPicture();
@@ -44,8 +46,10 @@ export class App extends Component {
     api
       .fetchPicture(pictureName, page)
       .then(res => {
+        console.log(res);
         this.setState(prevState => ({
           pictureData: [...prevState.pictureData, ...res.data.hits],
+          isVisible: page < Math.ceil(res.data.totalHits / this.state.per_page),
           status: Status.LOADED,
         }));
       })
@@ -97,7 +101,8 @@ export class App extends Component {
   }
 
   render() {
-    const { status, pictureData, pictureModal } = this.state;
+    const { isVisible, status, pictureData, pictureModal } = this.state;
+
     return (
       <div className={css.App}>
         <Searchbar onSubmit={this.handleFormSubmit} />
@@ -110,7 +115,9 @@ export class App extends Component {
             />
           </ImageGallery>
         )}
-        {status === 'loaded' && <LoadMore onClick={this.loadMore} />}
+        {status === 'loaded' && isVisible && (
+          <LoadMore onClick={this.loadMore} />
+        )}
         {pictureModal.length > 0 && (
           <Modal onClose={this.closeModal}>
             <img src={pictureModal} alt="" />
