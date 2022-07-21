@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Snisarenko21/goit-react-hw-04-images/static/css/main.9b3b4a5c.css",
+    "main.js": "/Snisarenko21/goit-react-hw-04-images/static/js/main.c419b279.js",
+    "index.html": "/Snisarenko21/goit-react-hw-04-images/index.html",
+    "main.9b3b4a5c.css.map": "/Snisarenko21/goit-react-hw-04-images/static/css/main.9b3b4a5c.css.map",
+    "main.c419b279.js.map": "/Snisarenko21/goit-react-hw-04-images/static/js/main.c419b279.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9b3b4a5c.css",
+    "static/js/main.c419b279.js"
+  ]
+}
