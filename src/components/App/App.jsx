@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from 'components/Modal/Modal';
 import ImageGallery from 'components/ImageGallery';
 import ImageGalleryItem from 'components/ImageGalleryItem';
@@ -13,117 +13,98 @@ const Status = {
   LOADED: 'loaded',
 };
 
-export class App extends Component {
-  state = {
-    pictureName: '',
-    pictureData: [],
-    pictureModal: '',
-    status: null,
-    page: 1,
-    per_page: 12,
-    isVisible: false,
-  };
+export function App() {
+  // state = {
+  //   pictureName: '',
+  //   pictureData: [],
+  //   pictureModal: '',
+  //   status: null,
+  //   page: 1,
+  //   per_page: 12,
+  //   isVisible: false,
+  // };
+  const [{ pictureName }, setPictureName] = useState('');
+  const [pictureData, setPictureData] = useState('');
+  const [pictureModal, setPictureModal] = useState('');
+  const [status, setStatus] = useState('');
+  const [page, setPage] = useState('');
+  const [isVisible, setIsVisible] = useState('');
 
-  componentDidUpdate(_, prevState) {
-    const prevSearch = prevState.pictureName;
-    const nextSearch = this.state.pictureName;
-    const nextPage = this.state.page;
-    const prevPage = prevState.page;
-
-    if (prevSearch !== nextSearch) {
-      this.loadPicture();
-      this.resetData();
+  useEffect(() => {
+    if (!pictureName) {
+      return;
     }
-    if (nextPage > prevPage) {
-      this.loadPicture();
-    }
-    this.scrollToBottom();
-  }
-
-  loadPicture = () => {
-    const { pictureName, page } = this.state;
-    this.setState({ status: Status.LOADING });
+    setStatus(Status.LOADING);
     api
       .fetchPicture(pictureName, page)
       .then(res => {
-        console.log(res);
-        this.setState(prevState => ({
-          pictureData: [...prevState.pictureData, ...res.data.hits],
-          isVisible: page < Math.ceil(res.data.totalHits / this.state.per_page),
-          status: Status.LOADED,
-        }));
+        setPictureData(state => [...state, ...res.data.hits]);
+        setIsVisible(page < Math.ceil(res.data.totalHits / 12));
+        setStatus(Status.LOADED);
       })
+      .catch(error => console.log(error))
+      .finally(scrollToBottom);
+  }, [page, pictureName]);
 
-      .catch(error => console.log(error));
+  const handleFormSubmit = pictureName => {
+    setPage(1);
+    setPictureName({ pictureName });
+    setPictureData('');
   };
 
-  handleFormSubmit = pictureName => {
-    this.resetPage();
-
-    this.setState({ pictureName });
+  // pictureModalClick = picture => {
+  //   this.setState({
+  //     pictureModal: picture,
+  //   });
+  // };
+  const pictureModalClick = picture => {
+    setPictureModal(picture);
   };
 
-  loadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
-  };
+  // resetPage() {
+  //   this.setState({
+  //     page: 1,
+  //   });
+  // }
 
-  pictureModalClick = picture => {
-    this.setState({
-      pictureModal: picture,
-    });
-  };
+  // resetData() {
+  //   this.setState({
+  //     pictureData: '',
+  //   });
+  // }
 
-  resetPage() {
-    this.setState({
-      page: 1,
-    });
-  }
-
-  resetData() {
-    this.setState({
-      pictureData: '',
-    });
-  }
-
-  closeModal = () => {
-    this.setState({
-      pictureModal: '',
-    });
-  };
-
-  scrollToBottom() {
+  // closeModal = () => {
+  //   this.setState({
+  //     pictureModal: '',
+  //   });
+  // };
+  const scrollToBottom = () => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,
       behavior: 'smooth',
     });
-  }
+  };
 
-  render() {
-    const { isVisible, status, pictureData, pictureModal } = this.state;
-
-    return (
-      <div className={css.App}>
-        <Searchbar onSubmit={this.handleFormSubmit} />
-        {status === 'loading' && <LoaderSpiner />}
-        {pictureData.length > 0 && (
-          <ImageGallery>
-            <ImageGalleryItem
-              pictureData={pictureData}
-              onClick={this.pictureModalClick}
-            />
-          </ImageGallery>
-        )}
-        {status === 'loaded' && isVisible && (
-          <LoadMore onClick={this.loadMore} />
-        )}
-        {pictureModal.length > 0 && (
-          <Modal onClose={this.closeModal}>
-            <img src={pictureModal} alt="" />
-          </Modal>
-        )}
-      </div>
-    );
-  }
+  return (
+    <div className={css.App}>
+      <Searchbar onSubmit={handleFormSubmit} />
+      {status === Status.LOADING && <LoaderSpiner />}
+      {pictureData.length > 0 && (
+        <ImageGallery>
+          <ImageGalleryItem
+            pictureData={pictureData}
+            onClick={pictureModalClick}
+          />
+        </ImageGallery>
+      )}
+      {status === Status.LOADED && isVisible && (
+        <LoadMore onClick={() => setPage(state => state + 1)} />
+      )}
+      {pictureModal.length > 0 && (
+        <Modal onClose={() => setPictureModal('')}>
+          <img src={pictureModal} alt="" />
+        </Modal>
+      )}
+    </div>
+  );
 }
