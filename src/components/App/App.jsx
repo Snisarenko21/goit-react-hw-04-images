@@ -14,21 +14,14 @@ const Status = {
 };
 
 export function App() {
-  // state = {
-  //   pictureName: '',
-  //   pictureData: [],
-  //   pictureModal: '',
-  //   status: null,
-  //   page: 1,
-  //   per_page: 12,
-  //   isVisible: false,
-  // };
   const [{ pictureName }, setPictureName] = useState('');
   const [pictureData, setPictureData] = useState('');
   const [pictureModal, setPictureModal] = useState('');
   const [status, setStatus] = useState('');
   const [page, setPage] = useState('');
   const [isVisible, setIsVisible] = useState('');
+
+  const per_page = 12;
 
   useEffect(() => {
     if (!pictureName) {
@@ -39,7 +32,7 @@ export function App() {
       .fetchPicture(pictureName, page)
       .then(res => {
         setPictureData(state => [...state, ...res.data.hits]);
-        setIsVisible(page < Math.ceil(res.data.totalHits / 12));
+        setIsVisible(page < Math.ceil(res.data.totalHits / per_page));
         setStatus(Status.LOADED);
       })
       .catch(error => console.log(error))
@@ -52,32 +45,10 @@ export function App() {
     setPictureData('');
   };
 
-  // pictureModalClick = picture => {
-  //   this.setState({
-  //     pictureModal: picture,
-  //   });
-  // };
   const pictureModalClick = picture => {
     setPictureModal(picture);
   };
 
-  // resetPage() {
-  //   this.setState({
-  //     page: 1,
-  //   });
-  // }
-
-  // resetData() {
-  //   this.setState({
-  //     pictureData: '',
-  //   });
-  // }
-
-  // closeModal = () => {
-  //   this.setState({
-  //     pictureModal: '',
-  //   });
-  // };
   const scrollToBottom = () => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,
