@@ -13,7 +13,7 @@ const Status = {
   LOADED: 'loaded',
 };
 
-export function App() {
+export default function App() {
   const [{ pictureName }, setPictureName] = useState('');
   const [pictureData, setPictureData] = useState('');
   const [pictureModal, setPictureModal] = useState('');
@@ -36,7 +36,7 @@ export function App() {
         setStatus(Status.LOADED);
       })
       .catch(error => console.log(error));
-    // .finally(scrollToBottom);
+    // .finally(scrollToBottom());
   }, [page, pictureName]);
 
   const handleFormSubmit = pictureName => {

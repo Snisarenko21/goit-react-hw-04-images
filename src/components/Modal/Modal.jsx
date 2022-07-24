@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 
 const modalRoot = document.querySelector('#modal-root');
 
-export function Modal({ onClose, children }) {
+export default function Modal({ onClose, children }) {
   useEffect(() => {
     const handleKeyDown = e => {
       if (e.code === 'Escape') {
@@ -31,5 +31,3 @@ export function Modal({ onClose, children }) {
     modalRoot
   );
 }
-
-export default Modal;
