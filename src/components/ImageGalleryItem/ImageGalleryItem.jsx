@@ -1,7 +1,7 @@
 import css from './ImageGalleryItem.module.css';
 import PropTypes from 'prop-types';
 
-const ImageGallryItem = ({ pictureData, onClick }) => {
+const ImageGalleryItem = ({ pictureData, onClick }) => {
   return pictureData.map(picture => (
     <li
       key={picture.id}
@@ -17,8 +17,8 @@ const ImageGallryItem = ({ pictureData, onClick }) => {
   ));
 };
 
-ImageGallryItem.propTypes = {
+ImageGalleryItem.propTypes = {
   pictureData: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default ImageGallryItem;
+export default ImageGalleryItem;

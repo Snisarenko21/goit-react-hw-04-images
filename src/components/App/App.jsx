@@ -36,7 +36,6 @@ export default function App() {
         setStatus(Status.LOADED);
       })
       .catch(error => console.log(error));
-    // .finally(scrollToBottom());
   }, [page, pictureName]);
 
   const handleFormSubmit = pictureName => {
@@ -49,12 +48,9 @@ export default function App() {
     setPictureModal(picture);
   };
 
-  // const scrollToBottom = () => {
-  //   window.scrollTo({
-  //     top: document.documentElement.scrollHeight,
-  //     behavior: 'smooth',
-  //   });
-  // };
+  const onButtonClick = () => {
+    setPage(state => state + 1);
+  };
 
   return (
     <div className={css.App}>
@@ -68,9 +64,7 @@ export default function App() {
           />
         </ImageGallery>
       )}
-      {status === 'loaded' && isVisible && (
-        <LoadMore onClick={() => setPage(state => state + 1)} />
-      )}
+      {status === 'loaded' && isVisible && <LoadMore onClick={onButtonClick} />}
       {pictureModal.length > 0 && (
         <Modal onClose={() => setPictureModal('')}>
           <img src={pictureModal} alt="" />
