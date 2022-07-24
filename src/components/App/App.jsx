@@ -19,7 +19,7 @@ export function App() {
   const [pictureModal, setPictureModal] = useState('');
   const [status, setStatus] = useState('');
   const [page, setPage] = useState('');
-  const [isVisible, setIsVisible] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
 
   const per_page = 12;
 
@@ -35,8 +35,8 @@ export function App() {
         setIsVisible(page < Math.ceil(res.data.totalHits / per_page));
         setStatus(Status.LOADED);
       })
-      .catch(error => console.log(error))
-      .finally(scrollToBottom);
+      .catch(error => console.log(error));
+    // .finally(scrollToBottom);
   }, [page, pictureName]);
 
   const handleFormSubmit = pictureName => {
@@ -49,17 +49,17 @@ export function App() {
     setPictureModal(picture);
   };
 
-  const scrollToBottom = () => {
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: 'smooth',
-    });
-  };
+  // const scrollToBottom = () => {
+  //   window.scrollTo({
+  //     top: document.documentElement.scrollHeight,
+  //     behavior: 'smooth',
+  //   });
+  // };
 
   return (
     <div className={css.App}>
       <Searchbar onSubmit={handleFormSubmit} />
-      {status === Status.LOADING && <LoaderSpiner />}
+      {status === 'loading' && <LoaderSpiner />}
       {pictureData.length > 0 && (
         <ImageGallery>
           <ImageGalleryItem
@@ -68,7 +68,7 @@ export function App() {
           />
         </ImageGallery>
       )}
-      {status === Status.LOADED && isVisible && (
+      {status === 'loaded' && isVisible && (
         <LoadMore onClick={() => setPage(state => state + 1)} />
       )}
       {pictureModal.length > 0 && (
