@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import css from './Modal.module.css';
 import { createPortal } from 'react-dom';
 
@@ -31,3 +32,7 @@ export default function Modal({ onClose, children }) {
     modalRoot
   );
 }
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired,
+};

@@ -1,12 +1,26 @@
-import css from './ImageGallery.module.css';
 import PropTypes from 'prop-types';
+import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
+import css from './ImageGallery.module.css';
 
-const ImageGallery = ({ children }) => (
-  <ul className={css.ImageGallery}>{children}</ul>
-);
+const ImageGallery = ({ pictureData, onClick }) => {
+  return (
+    <div className={css.ImageGallery}>
+      {pictureData.map(picture => {
+        return (
+          <ImageGalleryItem
+            key={picture.id}
+            picture={picture}
+            onClick={onClick}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 ImageGallery.propTypes = {
-  children: PropTypes.object,
+  pictureData: PropTypes.arrayOf(PropTypes.object),
+  onClick: PropTypes.func.isRequired,
 };
 
 export default ImageGallery;

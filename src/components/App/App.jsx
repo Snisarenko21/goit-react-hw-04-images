@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Modal from 'components/Modal/Modal';
 import ImageGallery from 'components/ImageGallery';
-import ImageGalleryItem from 'components/ImageGalleryItem';
+// import ImageGalleryItem from 'components/ImageGalleryItem';
 import LoaderSpiner from 'components/Loader/Loader';
 import api from 'services/api';
 import Searchbar from 'components/Searchbar/Searchbar';
@@ -19,6 +19,7 @@ export default function App() {
   const [pictureModal, setPictureModal] = useState('');
   const [status, setStatus] = useState('');
   const [page, setPage] = useState('');
+  const [isModal, setIsModal] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   const per_page = 12;
@@ -46,6 +47,7 @@ export default function App() {
 
   const pictureModalClick = picture => {
     setPictureModal(picture);
+    setIsModal(!isModal);
   };
 
   const onButtonClick = () => {
@@ -56,17 +58,12 @@ export default function App() {
     <div className={css.App}>
       <Searchbar onSubmit={handleFormSubmit} />
       {status === 'loading' && <LoaderSpiner />}
-      {pictureData.length > 0 && (
-        <ImageGallery>
-          <ImageGalleryItem
-            pictureData={pictureData}
-            onClick={pictureModalClick}
-          />
-        </ImageGallery>
+      {pictureData.length !== 0 && (
+        <ImageGallery pictureData={pictureData} onClick={pictureModalClick} />
       )}
       {status === 'loaded' && isVisible && <LoadMore onClick={onButtonClick} />}
-      {pictureModal.length > 0 && (
-        <Modal onClose={() => setPictureModal('')}>
+      {isModal && (
+        <Modal onClose={pictureModalClick}>
           <img src={pictureModal} alt="" />
         </Modal>
       )}
